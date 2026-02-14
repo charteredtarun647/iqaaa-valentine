@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQAAA 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body{
+margin:0;
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(-45deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
+background-size:400% 400%;
+animation:gradient 12s ease infinite;
+}
+
+@keyframes gradient{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+text-align:center;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+padding:40px;
+border-radius:30px;
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
+width:90%;
+max-width:500px;
+transition:0.5s;
+}
+
+h1{
+font-family:'Great Vibes',cursive;
+font-size:48px;
+color:white;
+}
+
+p{
+color:white;
+font-size:18px;
+min-height:60px;
+}
+
+button{
+padding:12px 25px;
+border-radius:50px;
+border:none;
+font-size:18px;
+cursor:pointer;
+margin:10px;
+transition:0.3s;
+}
+
+#yesBtn{
+background:#ff4d6d;
+color:white;
+box-shadow:0 0 20px #ff4d6d;
+}
+
+#yesBtn:hover{transform:scale(1.1);}
+
+#noBtn{
+background:#444;
+color:white;
+position:absolute;
+}
+
+.heart{
+position:absolute;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh);}
+100%{transform:translateY(-10vh);}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+<source src="romantic.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="box">
+<h1>IQAAA 💖</h1>
+<p id="question"></p>
+<img id="gif" src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" width="220">
+<div style="position:relative;">
+<button id="yesBtn">Yes 💕</button>
+<button id="noBtn">No 😐</button>
+</div>
+</div>
+
+<script>
+
+const music = document.getElementById("bgMusic");
+document.body.addEventListener("click",()=>music.play(),{once:true});
+
+const questions = [
+"Do you know how much you mean to me? 🥺",
+"Do you know you make my days brighter? ☀️",
+"Do you know your smile is my favorite thing in the world? 😍",
+"Can I keep holding your hand through everything? 🤍",
+"Will you be my Valentine? 💘"
+];
+
+const romanticMessages = [
+"You are my safe place, IQAAA 💖",
+"You are the calm in my chaos 🌸",
+"You are the best thing that ever happened to me 🥰",
+"I want to choose you every single day ❤️"
+];
+
+let step = 0;
+let noAttempts = 0;
+
+const questionEl = document.getElementById("question");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const box = document.getElementById("box");
+const gif = document.getElementById("gif");
+
+questionEl.innerText = questions[0];
+
+function floatHearts(){
+const heart = document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+15)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+}
+setInterval(floatHearts,500);
+
+yesBtn.addEventListener("click",()=>{
+if(step < questions.length-1){
+step++;
+questionEl.innerText = questions[step];
+
+if(step-1 < romanticMessages.length){
+questionEl.innerText += "\n\n" + romanticMessages[step-1];
+}
+
+yesBtn.style.transform = "scale(1)";
+}
+else{
+box.innerHTML = `
+<h1>You said YES 😭💖</h1>
+<p>
+IQAAA,<br><br>
+You just made me the happiest man alive.<br>
+I promise to love you gently,<br>
+protect your heart,<br>
+and make every day feel magical.<br><br>
+I love you endlessly ❤️
+</p>
+<img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="250">
+`;
+
+confetti({
+particleCount:300,
+spread:120,
+origin:{y:0.6}
+});
+}
+});
+
+function moveNo(){
+noAttempts++;
+const x=Math.random()*(window.innerWidth-100);
+const y=Math.random()*(window.innerHeight-50);
+noBtn.style.left=x+"px";
+noBtn.style.top=y+"px";
+yesBtn.style.transform=`scale(${1+noAttempts*0.1})`;
+
+if(noAttempts==2) noBtn.innerText="Are you sure? 🥺";
+if(noAttempts==4) noBtn.innerText="Please don’t 😭";
+if(noAttempts>6) noBtn.style.display="none";
+}
+
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("click",moveNo);
+
+</script>
+
+</body>
+</html>
